@@ -22,8 +22,8 @@ dept_employees(Es, Dept, DeptEmployees) :-
     DeptEmployees = [E | TailResult].
 dept_employees(Es, Dept, DeptEmployees) :-
     [E | TailEmployees] = Es,
-    employee(_Name, _Year, OtherDept, _Salary) = E,
-    OtherDept \= Dept,
+    employee(_Name, _Year, NextDept, _Salary) = E,
+    NextDept \= Dept,
     dept_employees(TailEmployees, Dept, DeptEmployees).
 
 :- begin_tests(dept_employees, []).
@@ -126,13 +126,15 @@ test(index_0_1, all(Z = [nil])) :-
 % list structure of List.
 %
 count_non_pairs(List, NNonPairs) :-
-    NNonPairs = 1.
+    List =[H|T].
+count_non_pairs(List, NNonPairs) :-
+    Nonpairs=1.
 count_non_pairs(List, NNonPairs) :-
     not(atomic(List)),
-    [Head | Tail] = List,
-    count_non_pairs(Head, HeadNN),
-    count_non_pairs(Tail, TailNN),
-    NNonPairs is HeadNN + TailNN.
+    [H | T] = List,
+    count_non_pairs(H, HNNonpairs),
+    count_non_pairs(T, TNNonpairs),
+    NNonPairs is HNNonpairs + TNNonpairs.
 
 :- begin_tests(count_non_pairs).
 test(empty, nondet) :-
@@ -286,33 +288,3 @@ test(complex, all(Z = [Clause1 /\ Clause2 /\ Clause3 /\ Clause4])) :-
     Clause4 = append([A|As], Ys, [A|Zs]) \/ ~append(As, Ys, Zs),
     clausal_form([Rule1, Rule2, Rule3, Rule4], Z).
 :- end_tests(clausal_form).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
